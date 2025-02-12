@@ -1,0 +1,74 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Todo List</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Todo List</h2>
+    <div id="app"></div>
+  </div>
+  
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <script type="text/babel">
+    function FormInput({ handleChange, handleSubmit, activity }) {
+      return (
+        <form onSubmit={handleSubmit} className="mb-3">
+          <div className="input-group">
+            <input 
+              type="text" 
+              className="form-control" 
+              placeholder="Masukkan aktivitas" 
+              value={activity} 
+              onChange={handleChange}
+              required
+            />
+            <button type="submit" className="btn btn-primary">Tambah</button>
+          </div>
+        </form>
+      );
+    }
+
+    function Content({ lists }) {
+      return (
+        <ul className="list-group">
+          {lists.map((item, index) => (
+            <li key={index} className="list-group-item">{item}</li>
+          ))}
+        </ul>
+      );
+    }
+
+    function TodoApp() {
+      const [activity, setActivity] = React.useState("");
+      const [lists, setLists] = React.useState([]);
+
+      function handleChange(e) {
+        setActivity(e.target.value);
+      }
+
+      function handleSubmit(e) {
+        e.preventDefault();
+        setLists([...lists, activity]);
+        setActivity("");
+      }
+
+      return (
+        <>
+          <FormInput handleChange={handleChange} handleSubmit={handleSubmit} activity={activity} />
+          <Content lists={lists} />
+        </>
+      );
+    }
+
+    const domNode = document.getElementById('app');
+    const root = ReactDOM.createRoot(domNode);
+    root.render(<TodoApp />);
+  </script>
+</body>
+</html>
